@@ -1,0 +1,2 @@
+export const AvaAddress = "0x4dC1322286D150242fAaA5515Fbcdf8EfADFC900";
+export const ArbAddress = "0x375F30575f60b3473496a978ad7C04dF94B0ECD4";
