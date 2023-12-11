@@ -14,7 +14,7 @@ import {
   Loading,
   Textarea,
 } from "@nextui-org/react";
-
+import axios from "axios";
 import { AuthContext } from "../utils/AuthProvider";
 import PageTitle from "../components/Typography/PageTitle";
 import SectionTitle from "../components/Typography/SectionTitle";
@@ -34,7 +34,7 @@ function Buttons() {
   const [country, setcountry] = useState("");
   const [profile, setprofile] = useState("");
   const [isloading, setisloading] = useState(false);
-  const [amount, setamount] = useState("");
+    const [amount, setamount] = useState("");
   const [users, setusers] = useState([]);
   const [userid, setuserid] = useState("");
   const handler = () => setVisible(true);
@@ -58,7 +58,7 @@ function Buttons() {
             ...user,
             ensName: ensName,
           };
-        })
+        }) 
       );
       setusers(usersWithENSNames);
     }
@@ -87,6 +87,50 @@ function Buttons() {
     const data = await response.json();
     return data.ens;
   }
+
+  
+  const [originalProfile, setOriginalProfile] = useState("");
+  const [rewrittenProfile, setRewrittenProfile] = useState("");
+  const [updatedResponse, setUpdatedResponse] = useState("");
+
+  const rewriteProfile = async () => {
+    try {
+      const response = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            { role: "system", content: "You are a helpful assistant." },
+            { role: "user", content: `Rewrite the following profile: "${originalProfile}"` },
+          ],
+          temperature: 1,
+          max_tokens: 256,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer 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",
+          },
+        }
+      );
+
+      const rewrittenProfile = response.data.choices[0].message.content.trim();
+    setRewrittenProfile(rewrittenProfile);
+
+    // Optionally, update the original profile to the rewritten one
+    setOriginalProfile(rewrittenProfile);
+
+      // Update the state to display the updated response in the separate Textarea
+      setUpdatedResponse(updatedResponse);
+    } catch (error) {
+      console.error("Error rewriting profile:", error);
+      setRewrittenProfile(originalProfile);
+      setUpdatedResponse(originalProfile);
+    }
+  };
 
 
   const onAddProfile = async () => {
@@ -233,19 +277,22 @@ function Buttons() {
             }}
             placeholder="Where are you from?"
           />
-          <Textarea
-            clearable
-            bordered
-            fullWidth
-            color="primary"
-            size="lg"
-            value={profile}
-            required
-            onChange={(e) => {
-              setprofile(e.target.value);
-            }}
-            placeholder="tell us something interesting about yourself"
-          />
+    <Textarea
+        clearable
+        bordered
+        fullWidth
+        color="primary"
+        size="lg"
+        value={originalProfile}
+        required
+        onChange={(e) => setOriginalProfile(e.target.value)}
+        placeholder="tell us something interesting about yourself"
+      />
+
+      <Button auto onClick={rewriteProfile}>
+        Rewrite Profile
+      </Button>
+
         </Modal.Body>
         <Modal.Footer>
           <Button auto flat color="error" onClick={closeHandler}>

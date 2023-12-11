@@ -24,7 +24,7 @@ const supportedChains: IChainData[] = [
     network: "DFI",
     chain_id: 1131,
     network_id: 1131,
-    rpc_url: " https://dmc.mydefichain.com/testnet",
+    rpc_url: "https://dmc.mydefichain.com/testnet",
     native_currency: {
       symbol: "DFI",
       name: "DFI",
