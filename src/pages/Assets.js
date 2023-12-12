@@ -13,7 +13,7 @@ import {
   Textarea,
 } from "@windmill/react-ui";
 import { AuthContext } from "../utils/AuthProvider";
-import { ethers } from "ethers";
+import { ethers } from "ethers"; 
 
 export default function Assets() {
   const { address, signer, connect, contract, provider } =

@@ -209,9 +209,9 @@ const AuthProvider = ({ children }) => {
 
       contractAddress = AvaAddress;
       rpcUrl = 'https://api.avax-test.network/ext/bc/C/rpc';
-    } else {
+    } else {  
       contractAddress = ArbAddress;
-      rpcUrl = 'https://goerli-rollup.arbitrum.io/rpc';
+      rpcUrl = 'https://dmc.mydefichain.com/testnet';
     }
   
     // Create a generic provider and query for unsold market items

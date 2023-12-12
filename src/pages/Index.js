@@ -43,6 +43,6 @@ export default function Home() {
         <Footer />
         <PopupWidget />
       </div>
-    </>
+    </> 
   );
 }
